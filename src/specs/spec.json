@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Repository Schema",
+  "description": "Schema for a repository containing packages and releases",
+  "definitions": {
+    "Release": {
+      "type": "object",
+      "required": [
+        "version",
+        "url"
+      ],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z.-]+))?(?:\\+([0-9A-Za-z.-]+))?$",
+          "description": "Semantic versioning format (e.g., 1.0.0)"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the release"
+        },
+        "dependencies": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9-_]+$",
+            "description": "Name of the dependency"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^\\s*(?:[\\^~><=]*\\s*)?(?:\\d+|x|\\*)\\.(?:\\d+|x|\\*)\\.(?:\\d+|x|\\*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?(?:\\s+[<>=^~]*\\s*(?:\\d+|x|\\*)\\.(?:\\d+|x|\\*)\\.(?:\\d+|x|\\*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?)*\\s*$",
+            "description": "Version of the dependency in semantic versioning format"
+          }
+        }
+      }
+    },
+    "Package": {
+      "type": "object",
+      "required": [
+        "name",
+        "description",
+        "authors",
+        "license",
+        "url",
+        "repo",
+        "releases"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the package"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the package"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of authors of the package"
+        },
+        "license": {
+          "type": "string",
+          "description": "License of the package"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the package"
+        },
+        "repo": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the repository of the package"
+        },
+        "releases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Release"
+          },
+          "description": "List of releases for this package"
+        }
+      }
+    },
+    "Repository": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/Package"
+      },
+      "description": "Repository containing packages keyed by their identifier"
+    }
+  },
+  "type": "object",
+  "properties": {
+    "repository": {
+      "$ref": "#/definitions/Repository"
+    }
+  },
+  "required": [
+    "repository"
+  ]
+}

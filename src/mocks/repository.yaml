@@ -1,0 +1,48 @@
+package1:
+  name: package1
+  description: This is a test package.
+  authors:
+    - person
+  license: MIT
+  url: https://homepage.org/package1
+  repo: https://github.com/person/package1
+  releases:
+    - version: 1.0.0
+      url: https://homepage.org/package1/versions/1.0.0
+      dependencies:
+        package2: 0.0.2
+        package3: 0.2.2
+    - version: 1.2.0
+      url: https://homepage.org/package1/versions/1.2.0
+      dependencies:
+        package2: 0.0.1
+
+package2:
+  name: package2
+  description: This is a test package.
+  authors:
+    - person
+  license: MIT
+  url: https://homepage.org/package2
+  repo: https://github.com/person/package2
+  releases:
+    - version: 0.0.2
+      url: https://homepage.org/package2/versions/0.0.2
+    - version: 0.0.1
+      url: https://homepage.org/package2/versions/0.0.1
+      dependencies:
+        package3: 0.2.2
+
+package3:
+  name: package3
+  description: This is a test package.
+  authors:
+    - person
+  license: MIT
+  url: https://homepage.org/package3
+  repo: https://github.com/person/package3
+  releases:
+    - version: 0.2.2
+      url: https://homepage.org/package3/versions/0.2.2
+    - version: 0.3.1
+      url: https://homepage.org/package3/versions/0.3.1
