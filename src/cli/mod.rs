@@ -45,6 +45,7 @@ pub(crate) async fn cli() -> Result<()> {
                     .unwrap_or_else(|_| "Error serializing result".to_string()),)
             })
             .map_err(|e| miette::Report::msg(format!("Error: {}", e))),
+
         Commands::ListRaw { json } => {
             let obj = from_json(&json)?;
             list::do_raw(&obj, &repo)

@@ -45,3 +45,32 @@ mod data {
         assert_eq!(dep_names, vec!["package2", "package3"]);
     }
 }
+
+mod resolution {
+    use baryon::core::dependencies::{PackageRequirement, PackageResolver, Repository, Strategy};
+    use baryon::core::repository::Repository as Repo;
+    use baryon::mocks::repository::MockRepository;
+
+    #[tokio::test]
+    async fn test_package_resolution() {
+        let mock = MockRepository::new().await;
+        let repo = Repository::new(mock.get_packages());
+
+        let strategy = Strategy::new();
+        let requirements =
+            vec![PackageRequirement::new("package1".to_string(), "1.0.0".to_string()).unwrap()];
+
+        let mut resolver = PackageResolver::new(requirements, repo, strategy);
+        let resolution = resolver.resolve();
+
+        assert!(resolution.is_ok());
+        resolution
+            .map(|resolved_packages| {
+                assert_eq!(resolved_packages.len(), 3);
+                for (package_name, version) in resolved_packages.iter() {
+                    println!("   Package: {} -> {}", package_name, version.version);
+                }
+            })
+            .unwrap_or_default()
+    }
+}
